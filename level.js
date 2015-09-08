@@ -77,6 +77,12 @@ var TILESET_PADDING = level.tilesets[0].margin;
 var TILESET_COUNT_X = 14;
 var TILESET_COUNT_Y = 14;
 
+//collision enum
+var LAYER_COUNT = 3;
+var LAYER_BACKGROUND = 0;
+var LAYER_PLATFORMS = 1;
+var LAYER_LADDERS = 2;
+
 var tileset = document.createElement("img");
 tileset.src = level.tilesets[0].image;
 
@@ -106,6 +112,45 @@ function drawMap()
 	}
 }
 
+function cellAtPixelCoord(layer, x, y)
+{
+	if (x < 0 || x > SCREEN_WIDTH || y < 0)
+		return 1;
+	
+	if (y > SCREEN_HEIGHT)
+		return 0;
+	
+	return cellAtTileCoord(layer, pixelToTile(x), pixelToTile(y));
+}
 
+function cellAtTileCoord(layer, tx, ty)
+{
+	if (tx < 0 || tx >= MAP.tw || ty < 0)
+		return 1;
+	if (ty >= MAP.th)
+		return 0;
+	
+	return cells[layer][ty][tx];
+}
+
+function tileToPixel(tile)
+{
+	return tile * TILE;
+}
+
+function pixelToTile(pixel)
+{
+	return Math.floor(pixel/TILE);
+}
+
+function bound(value, min, max)
+{
+	if (value < min)
+		return min;
+	if(value > max)
+		return max;
+	
+	return value;
+}
 
 
