@@ -87,6 +87,19 @@ initialise();
 var keyboard = new Keyboard();
 var player = new Player();
 
+var music = new Howl(
+{
+	urls: ["background.ogg"],
+	loop: true,
+	buffer: true,
+	volume: 0.5
+});
+//uncomment for music 
+//music.play();
+
+var cam_x = 0;
+var cam_y = 0;
+
 function run()
 {
 	context.fillStyle = "#ccc";		
@@ -96,9 +109,11 @@ function run()
 	
 	player.update(deltaTime);
 	
+	cam_x = bound(player.x - canvas.width / 2, 0, MAP.tw * TILE);
+	cam_y = bound(player.y - canvas.height / 2, 0, canvas.height);
 	
-	drawMap();
-	player.draw();
+	drawMap(cam_x, cam_y);
+	player.draw(cam_x, cam_y);
 		
 	// update the frame counter 
 	fpsTime += deltaTime;
@@ -111,9 +126,9 @@ function run()
 	}		
 		
 	// draw the FPS
-	context.fillStyle = "#f00";
-	context.font="14px Arial";
-	context.fillText("FPS: " + fps, 5, 20, 100);
+	//context.fillStyle = "#f00";
+	//context.font="14px Arial";
+	//context.fillText("FPS: " + fps, 5, 20, 100);
 }
 
 

@@ -7,9 +7,9 @@ var ANIM_WALK_LEFT = 2;
 var ANIM_IDLE_RIGHT = 3;
 var ANIM_JUMP_RIGHT = 4;
 var ANIM_WALK_RIGHT = 5;
-//var ANIM_SHOOT_LEFT = 6;
-//var ANIM_SHOOT_RIGHT = 7;
-var ANIM_MAX = 6;
+var ANIM_SHOOT_LEFT = 6;
+var ANIM_SHOOT_RIGHT = 7;
+var ANIM_MAX = 8;
 
 var Player = function()
 {
@@ -58,10 +58,13 @@ var Player = function()
 	}
 	
 	this.direction = LEFT;
-	//this.shooting = false;
+	this.shooting = false;
 	
 	this.x = 9 * TILE;
 	this.y = 0 * TILE;
+	
+	this.start_x = this.x;
+	this.start_y = this.y;
 	
 	this.width = 159;
 	this.height = 163;
@@ -75,8 +78,24 @@ var Player = function()
 	this.falling = true;
 	this.jumping = false;	
 	
+	this.lives = 3;
+	this.lives_image = document.createElement("img");
+	this.lives_image.src = "Heart-blue-icon.png";
 	
-}
+	var self = this;
+	
+	this.jump_sfx_isPlaying = false;
+	this.jump_sfx = new Howl(
+	{
+		urls : ["fireEffect.ogg"],
+		buffer : true,
+		volume : 1,
+		onend : function()
+		{
+			self.jump_sfx_isPlaying = false;
+		}
+	});
+};
 
 Player.prototype.update = function(dt)
 {
@@ -91,6 +110,7 @@ Player.prototype.update = function(dt)
 		left = true;
 		this.direction = LEFT;
 		if (this.sprite.currentAnimation != ANIM_WALK_LEFT
+			&& this.sprite.currentAnimation != ANIM_SHOOT_LEFT
 			&& !this.jumping)
 			this.sprite.setAnimation(ANIM_WALK_LEFT);
 	}
@@ -99,6 +119,7 @@ Player.prototype.update = function(dt)
 		right = true;
 		this.direction = RIGHT;
 		if (this.sprite.currentAnimation != ANIM_WALK_RIGHT
+			&& this.sprite.currentAnimation != ANIM_SHOOT_RIGHT
 			&& !this.jumping)
 			this.sprite.setAnimation(ANIM_WALK_RIGHT);
 	}
@@ -124,20 +145,34 @@ Player.prototype.update = function(dt)
 	
 	if (keyboard.isKeyDown (keyboard.KEY_SPACE))
 	{
+		
+		
 		jump = true;
 		if (left)
 			this.sprite.setAnimation(ANIM_JUMP_LEFT);
+		
 		if (right)
 			this.sprite.setAnimation(ANIM_JUMP_RIGHT);
-	}
-	//else if (keyboard.isKeyDown(keyboard.KEY_SHIFT) && !jump)
-	//{
-	//	if (this.direction == LEFT)
-	//		this.sprite.setAnimation(ANIM_SHOOT_LEFT)
-	//	else
-	//		this.sprite.setAnimation(ANIM_SHOOT_RIGHT)
-	//}
+		
 	
+	}
+	else if (keyboard.isKeyDown(keyboard.KEY_SHIFT) && !jump)
+	{
+		this.shooting = true;
+		if (this.direction == LEFT)
+		{	
+			if (this.sprite.currentAnimation != ANIM_SHOOT_LEFT)
+				this.sprite.setAnimation(ANIM_SHOOT_LEFT);
+		}
+		else
+		{	
+			if (this.sprite.currentAnimation != ANIM_SHOOT_RIGHT)
+				this.sprite.setAnimation(ANIM_SHOOT_RIGHT);
+		}
+	}
+	
+	else if (this.shooting)
+		this.shooting = false;
 	
 	var wasleft = (this.velocity_x < 0);
 	var wasright = (this.velocity_x > 0);
@@ -164,6 +199,12 @@ Player.prototype.update = function(dt)
 			this.sprite.setAnimation(ANIM_JUMP_LEFT);
 		else
 			this.sprite.setAnimation(ANIM_JUMP_RIGHT);
+		
+		if (!this.jump_sfx.isPlaying)
+		{
+			this.jump_sfx.play();
+			this.jump_sfx_isPlaying = true;
+		}
 	}
 	
 	this.x = Math.floor( this.x + (dt * this.velocity_x));
@@ -231,21 +272,46 @@ Player.prototype.update = function(dt)
 		}
 	}
 	
+	if (this.y > canvas.height + 300)
+	{
+		this.lives --;
+		this.x = this.start_x;
+		this.y = this.start_y;
+	}
+	
+	//check are we hitting the ladder
+	//check if pressing up
+	
+	//if you hit a ladder and you press up
+	// 	player climbinging animation
+	// 	move up
+	//if you hit a ladder and you press downward
+    // 	player climbing
+	//	move down
+	
+	
 	cell =      cellAtTileCoord(LAYER_LADDERS, tx,     ty);
 	cellright = cellAtTileCoord(LAYER_LADDERS, tx + 1, ty);
 	celldown =  cellAtTileCoord(LAYER_LADDERS, tx,     ty + 1);
 	celldiag =  cellAtTileCoord(LAYER_LADDERS, tx + 1, ty + 1);
+	
+	
+	
 }
 
-Player.prototype.draw = function()
+Player.prototype.draw = function(cam_x, cam_y)
 {
-	this.sprite.draw(context, this.x, this.y);
+	this.sprite.draw(context, this.x - cam_x, this.y - cam_y);
 	
-	//context.save();
-	//	context.translate(this.x, this.y);
-	//	context.rotate(this.rotation);
-	//	context.drawImage(this.image, 
-	//			this.offset_x, this.offset_y);	
-	//context.restore();
+	for (var i = 0; i < this.lives; i++)
+	{
+		context.save();
+			context.translate(50 + ( 5 + this.lives_image.width) * i, 30);
+			context.drawImage(this.lives_image,
+				-this.lives_image.width/2, -this.lives_image.height/2,
+				this.lives_image.width, this.lives_image.height);
+		context.restore();
+	}
 }
+
 
