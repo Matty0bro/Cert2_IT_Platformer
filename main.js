@@ -100,6 +100,32 @@ var music = new Howl(
 var cam_x = 0;
 var cam_y = 0;
 
+//function runSplash(delta)
+//{
+//	splashTimer -= delta;
+//	if(splashTimer <= 0)
+//	{
+//		gameState = STATE_GAME
+//		return;
+//	}
+//	
+//	context.fillStyle = "#000";
+//	context.font = "24px Arial";
+//	context.fillText("GET READY TO PLAY: " + Math.ceil(splashTimer), 200, 240)
+//}
+
+//function runGame(delta)
+//{
+//	change to suit game 
+//}
+
+//function runGameOver(delta)
+//{
+//	context.fillStyle = "#000";
+//	context.font = "24px Arial";
+//	context.fillText("GAME OVER", 200, 240);
+//}
+
 function run()
 {
 	context.fillStyle = "#ccc";		
@@ -125,10 +151,28 @@ function run()
 		fpsCount = 0;
 	}		
 		
-	// draw the FPS
-	//context.fillStyle = "#f00";
-	//context.font="14px Arial";
-	//context.fillText("FPS: " + fps, 5, 20, 100);
+	
+	
+	//var now = Date.now();
+	//var delta = (now - lastUpdate) * 0.001;
+	//lastUpdate = now;
+	//
+	//
+	//
+	//switch (gameState)
+	//{
+	//	case STATE_SPLASH:
+	//		runSplash(delta);
+	//		break;
+	//	case STATE_GAME:
+	//		runGame(delta);
+	//		break;
+	//	case STATE_GAMEOVER:
+	//		runGameOver(delta)
+	//		break;
+	//	default:
+	//		//Never should happen
+	//}
 }
 
 
