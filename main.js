@@ -89,7 +89,7 @@ var player = new Player();
 
 var music = new Howl(
 {
-	urls: ["background.ogg"],
+	urls: ["BlipStream.mp3"],
 	loop: true,
 	buffer: true,
 	volume: 0.5
@@ -99,32 +99,6 @@ var music = new Howl(
 
 var cam_x = 0;
 var cam_y = 0;
-
-//function runSplash(delta)
-//{
-//	splashTimer -= delta;
-//	if(splashTimer <= 0)
-//	{
-//		gameState = STATE_GAME
-//		return;
-//	}
-//	
-//	context.fillStyle = "#000";
-//	context.font = "24px Arial";
-//	context.fillText("GET READY TO PLAY: " + Math.ceil(splashTimer), 200, 240)
-//}
-
-//function runGame(delta)
-//{
-//	change to suit game 
-//}
-
-//function runGameOver(delta)
-//{
-//	context.fillStyle = "#000";
-//	context.font = "24px Arial";
-//	context.fillText("GAME OVER", 200, 240);
-//}
 
 function run()
 {
@@ -150,29 +124,6 @@ function run()
 		fps = fpsCount;
 		fpsCount = 0;
 	}		
-		
-	
-	
-	//var now = Date.now();
-	//var delta = (now - lastUpdate) * 0.001;
-	//lastUpdate = now;
-	//
-	//
-	//
-	//switch (gameState)
-	//{
-	//	case STATE_SPLASH:
-	//		runSplash(delta);
-	//		break;
-	//	case STATE_GAME:
-	//		runGame(delta);
-	//		break;
-	//	case STATE_GAMEOVER:
-	//		runGameOver(delta)
-	//		break;
-	//	default:
-	//		//Never should happen
-	//}
 }
 
 

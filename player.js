@@ -13,8 +13,7 @@ var ANIM_MAX = 8;
 
 var Player = function()
 {
-	//this.image = document.createElement("img");
-	//this.image.src = "hero.png";
+
 	
 	this.sprite = new Sprite("ChuckNorris.png");
 	
@@ -82,12 +81,16 @@ var Player = function()
 	this.lives_image = document.createElement("img");
 	this.lives_image.src = "Heart-blue-icon.png";
 	
+	this.gun = 1;
+	this.gun_image = document.createElement("img");
+	this.gun_image.src = "gun.png";
+	
 	var self = this;
 	
 	this.jump_sfx_isPlaying = false;
 	this.jump_sfx = new Howl(
 	{
-		urls : ["fireEffect.ogg"],
+		urls : ["jump.wav"],
 		buffer : true,
 		volume : 1,
 		onend : function()
@@ -95,6 +98,18 @@ var Player = function()
 			self.jump_sfx_isPlaying = false;
 		}
 	});
+	
+	
+	this.cur_bullet_index = 0;
+	this.max_bullets = 100;
+	this.bullets = [];
+	for (var i = 0; i < this.max_bullets; i++)
+	{
+		this.bullets[i] = new Bullet();
+	}
+	this.shoot_timer = 0.01;
+	this.shoot_cooldown = 1.2;
+	
 };
 
 Player.prototype.update = function(dt)
@@ -156,23 +171,49 @@ Player.prototype.update = function(dt)
 		
 	
 	}
-	else if (keyboard.isKeyDown(keyboard.KEY_SHIFT) && !jump)
+	
+	if(keyboard.isKeyDown(keyboard.KEY_SHIFT))
 	{
-		this.shooting = true;
-		if (this.direction == LEFT)
-		{	
-			if (this.sprite.currentAnimation != ANIM_SHOOT_LEFT)
-				this.sprite.setAnimation(ANIM_SHOOT_LEFT);
-		}
-		else
-		{	
-			if (this.sprite.currentAnimation != ANIM_SHOOT_RIGHT)
-				this.sprite.setAnimation(ANIM_SHOOT_RIGHT);
+		if(this.shoot_cooldown <= 0.0)
+		{
+			
+			var jitter = Math.random() * 0.2 - 0.1;
+			
+			if(this.direction == LEFT)
+			   this.bullets[this.cur_bullet_index].fire(this.x,
+			   this.y, -1, jitter);
+			else
+				 this.bullets[this.cur_bullet_index].fire(this.x,
+			   this.y, 1, jitter);
+			   
+			this.shoot_cooldown = this.shoot_timer;
+			
+			this.cur_bullet_index ++;
+			if (this.cur_bullet_index >= this.max_bullets)
+				this.cur_bullet_index = 0;
+			
+			this.shooting = true;
+			if (this.direction == LEFT)
+			{	
+				if (this.sprite.currentAnimation != ANIM_SHOOT_LEFT)
+					this.sprite.setAnimation(ANIM_SHOOT_LEFT);
+			}
+			else
+			{	
+				if (this.sprite.currentAnimation != ANIM_SHOOT_RIGHT)
+					this.sprite.setAnimation(ANIM_SHOOT_RIGHT);
+			}
 		}
 	}
 	
-	else if (this.shooting)
-		this.shooting = false;
+	if (this.shoot_cooldown > 0.0)
+		this.shoot_cooldown -= dt;
+	
+	for (var i = 0; i < this.max_bullets; i++)
+	{
+		this.bullets[i].update(dt);
+	}
+	
 	
 	var wasleft = (this.velocity_x < 0);
 	var wasright = (this.velocity_x > 0);
@@ -278,30 +319,16 @@ Player.prototype.update = function(dt)
 		this.x = this.start_x;
 		this.y = this.start_y;
 	}
-	
-	//check are we hitting the ladder
-	//check if pressing up
-	
-	//if you hit a ladder and you press up
-	// 	player climbinging animation
-	// 	move up
-	//if you hit a ladder and you press downward
-    // 	player climbing
-	//	move down
-	
-	
-	cell =      cellAtTileCoord(LAYER_LADDERS, tx,     ty);
-	cellright = cellAtTileCoord(LAYER_LADDERS, tx + 1, ty);
-	celldown =  cellAtTileCoord(LAYER_LADDERS, tx,     ty + 1);
-	celldiag =  cellAtTileCoord(LAYER_LADDERS, tx + 1, ty + 1);
-	
-	
-	
 }
 
 Player.prototype.draw = function(cam_x, cam_y)
 {
 	this.sprite.draw(context, this.x - cam_x, this.y - cam_y);
+	
+	for (var i = 0; i < this.max_bullets; i++)
+	{
+		this.bullets[i].draw(cam_x, cam_y);
+	}
 	
 	for (var i = 0; i < this.lives; i++)
 	{
@@ -312,6 +339,14 @@ Player.prototype.draw = function(cam_x, cam_y)
 				this.lives_image.width, this.lives_image.height);
 		context.restore();
 	}
+
+	context.save();
+		context.translate(500, 30);
+		context.drawImage(this.gun_image,
+					-this.gun_image.width/2, -this.gun_image.height/2,
+					this.gun_image.width, this.gun_image.height);
+	context.restore();
+	
 }
 
 
