@@ -102,6 +102,8 @@ var cam_y = 0;
 
 function run()
 {
+	if(player.lives > 0)
+	{
 	context.fillStyle = "#ccc";		
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	
@@ -109,8 +111,8 @@ function run()
 	
 	player.update(deltaTime);
 	
-	cam_x = bound(player.x - canvas.width / 2, 0, MAP.tw * TILE);
-	cam_y = bound(player.y - canvas.height / 2, 0, canvas.height);
+	cam_x = bound(player.x - canvas.width / 2, 0, MAP.tw * TILE - canvas.width);
+	cam_y = bound(player.y - canvas.height / 2, 0, MAP.th * TILE - canvas.height);
 	
 	drawMap(cam_x, cam_y);
 	player.draw(cam_x, cam_y);
@@ -123,7 +125,18 @@ function run()
 		fpsTime -= 1;
 		fps = fpsCount;
 		fpsCount = 0;
-	}		
+	}
+	}
+	else 
+	{
+		context.fillStyle = "#ccc";		
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		
+		context.fillStyle = "#000";
+		context.font = "24px Arial";
+		context.fillText("GAME OVER", 200, 240);
+	}
+
 }
 
 

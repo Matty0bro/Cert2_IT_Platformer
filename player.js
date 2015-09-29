@@ -318,6 +318,8 @@ Player.prototype.update = function(dt)
 		this.lives --;
 		this.x = this.start_x;
 		this.y = this.start_y;
+		
+	
 	}
 }
 
