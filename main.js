@@ -95,7 +95,7 @@ var music = new Howl(
 	volume: 0.5
 });
 //uncomment for music 
-//music.play();
+music.play();
 
 var cam_x = 0;
 var cam_y = 0;

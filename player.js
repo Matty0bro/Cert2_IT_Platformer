@@ -321,13 +321,9 @@ Player.prototype.update = function(dt)
 	}
 }
 
-//function Bulletcounter(delta)
+//function Bulletcounter()
 //{
-//	bulletcounter -= delta;
-//	if(bulletcounter <= 0)
-//	{
 //	
-//	}
 //	
 //	context.fillStyle = "#000";
 //	context.font = "24px Arial";
