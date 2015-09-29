@@ -108,7 +108,7 @@ var Player = function()
 		this.bullets[i] = new Bullet();
 	}
 	this.shoot_timer = 0.01;
-	this.shoot_cooldown = 1.2;
+	this.shoot_cooldown = 0.2;
 	
 };
 
@@ -320,6 +320,19 @@ Player.prototype.update = function(dt)
 		this.y = this.start_y;
 	}
 }
+
+//function Bulletcounter(delta)
+//{
+//	bulletcounter -= delta;
+//	if(bulletcounter <= 0)
+//	{
+//	
+//	}
+//	
+//	context.fillStyle = "#000";
+//	context.font = "24px Arial";
+//	context.fillText(": " + , 600, 30)
+//}
 
 Player.prototype.draw = function(cam_x, cam_y)
 {
