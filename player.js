@@ -321,13 +321,18 @@ Player.prototype.update = function(dt)
 	}
 }
 
-//function Bulletcounter()
+//function Bulletcounter(delta)
 //{
-//	
+//	splashTimer -= delta;
+//	if(splashTimer <= 0)
+//	{
+//		
+//		
+//	}
 //	
 //	context.fillStyle = "#000";
 //	context.font = "24px Arial";
-//	context.fillText(": " + , 600, 30)
+//	context.fillText(": " , 600, 30)
 //}
 
 Player.prototype.draw = function(cam_x, cam_y)
