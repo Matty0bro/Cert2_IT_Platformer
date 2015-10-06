@@ -331,22 +331,6 @@ Player.prototype.update = function(dt)
 	}
 }
 
-
-
-function Bulletcounter()
-{
-	
-	//bulletsCount++;
-	//for(this.bullets)
-	//{
-	//  
-	//	Bullet = bulletsCount;
-	//	bulletsCount = 0;
-	//}
-	
-	
-}
-
 Player.prototype.draw = function(cam_x, cam_y)
 {
 	this.sprite.draw(context, this.x - cam_x, this.y - cam_y);
