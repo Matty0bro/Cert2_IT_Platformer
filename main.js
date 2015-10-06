@@ -95,10 +95,11 @@ var music = new Howl(
 	volume: 0.5
 });
 //uncomment for music 
-//music.play();
+music.play();
 
 var cam_x = 0;
 var cam_y = 0;
+
 
 function run()
 {
@@ -129,10 +130,24 @@ function run()
 		context.font = "24px Arial";
 		context.fillText("GAME OVER", 200, 240);
 		
-		if (keyboard.isKeyDown(keyboard.KEY_ENTER))
-		{
+		context.fillStyle = "#000";
+		context.font = "24px Arial";
+		context.fillText("Press ENTER to play again", 200, 280);
+		
+		if (keyboard.isKeyDown(keyboard.KEY_ENTER) && player.lives <= 0) {
+		
+		player.lives = 3;
+		player.falling = true;
+		player.jumping = false;
+		player.direction = LEFT;
+		player.shooting = false;
 			
-		}
+		player.x = 9 * TILE;
+		player.y = 0 * TILE;
+		
+		
+	}
+	
 	}
 
 }

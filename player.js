@@ -10,6 +10,7 @@ var ANIM_WALK_RIGHT = 5;
 var ANIM_SHOOT_LEFT = 6;
 var ANIM_SHOOT_RIGHT = 7;
 var ANIM_MAX = 8;
+bulletsCount = 100;
 
 var Player = function()
 {
@@ -120,6 +121,8 @@ Player.prototype.update = function(dt)
 	var right = false;
 	var jump = false;
 	
+	
+	
 	if (keyboard.isKeyDown(keyboard.KEY_LEFT))
 	{
 		left = true;
@@ -155,7 +158,9 @@ Player.prototype.update = function(dt)
 		}
 	}
 	
-	
+	context.fillStyle = "#000000";
+	context.font = "24px Arial";
+	context.fillText(": " + Math.ceil(bulletsCount), 550, 30)
 	
 	
 	if (keyboard.isKeyDown (keyboard.KEY_SPACE))
@@ -172,7 +177,7 @@ Player.prototype.update = function(dt)
 	
 	}
 	
-	if(keyboard.isKeyDown(keyboard.KEY_SHIFT))
+	if(keyboard.isKeyDown(keyboard.KEY_SHIFT) && bulletsCount > 0)
 	{
 		if(this.shoot_cooldown <= 0.0)
 		{
@@ -192,6 +197,7 @@ Player.prototype.update = function(dt)
 			if (this.cur_bullet_index >= this.max_bullets)
 				this.cur_bullet_index = 0;
 			
+			bulletsCount--;
 			this.shooting = true;
 			if (this.direction == LEFT)
 			{	
@@ -205,6 +211,8 @@ Player.prototype.update = function(dt)
 			}
 		}
 	}
+	
+	
 	
 	if (this.shoot_cooldown > 0.0)
 		this.shoot_cooldown -= dt;
@@ -323,20 +331,20 @@ Player.prototype.update = function(dt)
 	}
 }
 
+
+
 function Bulletcounter()
 {
 	
 	//bulletsCount++;
 	//for(this.bullets)
 	//{
-	//	
+	//  
 	//	Bullet = bulletsCount;
 	//	bulletsCount = 0;
 	//}
 	
-	context.fillStyle = "#000000";
-	context.font = "24px Arial";
-	context.fillText(": " + Math.ceil(this.bullets), 600, 30)
+	
 }
 
 Player.prototype.draw = function(cam_x, cam_y)
