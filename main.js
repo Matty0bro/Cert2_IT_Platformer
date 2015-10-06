@@ -95,7 +95,7 @@ var music = new Howl(
 	volume: 0.5
 });
 //uncomment for music 
-music.play();
+//music.play();
 
 var cam_x = 0;
 var cam_y = 0;
@@ -117,15 +117,8 @@ function run()
 	drawMap(cam_x, cam_y);
 	player.draw(cam_x, cam_y);
 		
-	// update the frame counter 
-	fpsTime += deltaTime;
-	fpsCount++;
-	if(fpsTime >= 1)
-	{
-		fpsTime -= 1;
-		fps = fpsCount;
-		fpsCount = 0;
-	}
+	
+	
 	}
 	else 
 	{
@@ -135,6 +128,11 @@ function run()
 		context.fillStyle = "#000";
 		context.font = "24px Arial";
 		context.fillText("GAME OVER", 200, 240);
+		
+		if (keyboard.isKeyDown(keyboard.KEY_ENTER))
+		{
+			
+		}
 	}
 
 }

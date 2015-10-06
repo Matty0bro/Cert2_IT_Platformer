@@ -323,19 +323,21 @@ Player.prototype.update = function(dt)
 	}
 }
 
-//function Bulletcounter(delta)
-//{
-//	splashTimer -= delta;
-//	if(splashTimer <= 0)
-//	{
-//		
-//		
-//	}
-//	
-//	context.fillStyle = "#000";
-//	context.font = "24px Arial";
-//	context.fillText(": " , 600, 30)
-//}
+function Bulletcounter()
+{
+	
+	//bulletsCount++;
+	//for(this.bullets)
+	//{
+	//	
+	//	Bullet = bulletsCount;
+	//	bulletsCount = 0;
+	//}
+	
+	context.fillStyle = "#000000";
+	context.font = "24px Arial";
+	context.fillText(": " + Math.ceil(this.bullets), 600, 30)
+}
 
 Player.prototype.draw = function(cam_x, cam_y)
 {
@@ -362,6 +364,7 @@ Player.prototype.draw = function(cam_x, cam_y)
 					-this.gun_image.width/2, -this.gun_image.height/2,
 					this.gun_image.width, this.gun_image.height);
 	context.restore();
+	
 	
 }
 
